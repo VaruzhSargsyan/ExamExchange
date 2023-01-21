@@ -13,16 +13,17 @@ import com.app.examexchange.model.ViewModelFactory
 class MainActivity : AppCompatActivity() {
     
     private val viewModel: MainViewModel by viewModels { ViewModelFactory((application as Application).applicationModel) }
-    val binding: ActivityMainBinding = BindingFactory.bind(this, R.layout.activity_main)
+    private lateinit var binding: ActivityMainBinding
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    
+        binding = BindingFactory.bind(this, R.layout.activity_main)
+        
         setContentView(binding.root)
      
         viewModel.allCurrencies.observe(this) { currencies ->
-            Toast.makeText(this@MainActivity, "Currencies are downloaded", Toast.LENGTH_LONG ).show()
+            Toast.makeText(this@MainActivity, "Currencies are downloaded", Toast.LENGTH_SHORT).show()
         }
-        
-        viewModel.downloadCurrencies()
     }
 }
