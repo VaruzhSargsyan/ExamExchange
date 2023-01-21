@@ -24,13 +24,24 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    kapt {
+        generateStubs = true
+    }
+
 }
 
 dependencies {
@@ -49,9 +60,6 @@ dependencies {
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$rootProject.room_version")
-
-    // optional - RxJava2 support for Room
-    implementation("androidx.room:room-rxjava2:$rootProject.room_version")
 
     // optional - RxJava3 support for Room
     implementation("androidx.room:room-rxjava3:$rootProject.room_version")
@@ -78,5 +86,8 @@ dependencies {
 
     // okhttp
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
+
+    // binding
+    kapt "com.android.databinding:compiler:3.1.4"
 
 }
