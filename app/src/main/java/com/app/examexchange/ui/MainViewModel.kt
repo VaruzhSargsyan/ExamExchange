@@ -2,6 +2,7 @@ package com.app.examexchange.ui
 
 import androidx.lifecycle.*
 import com.app.examexchange.application.ApplicationModel
+import com.app.examexchange.database.entities.Balance
 import com.app.examexchange.database.entities.Currencies
 import com.app.examexchange.database.entities.Currency
 import com.app.examexchange.model.AbstractViewModel
@@ -13,6 +14,8 @@ import retrofit2.Response
 class MainViewModel(applicationModel: ApplicationModel) : AbstractViewModel(applicationModel) {
     
     var allCurrencies: LiveData<List<Currency>> = applicationModel.repository.allCurrencies.asLiveData()
+    var listBalance: LiveData<List<Balance>> = applicationModel.repository.listBalance.asLiveData()
+    
     private val eventManager = EventManager()
     
     init {

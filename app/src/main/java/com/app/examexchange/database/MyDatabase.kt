@@ -31,7 +31,7 @@ abstract class MyDatabase : RoomDatabase() {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
-
+                    database.balanceDao().upsert(listOf(Balance(currency = "EUR", value = 1000.0f)))
                 }
             }
         }

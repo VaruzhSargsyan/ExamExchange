@@ -7,6 +7,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "table_balance")
 data class Balance (
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "currency") val currency: Int,
+    @ColumnInfo(name = "currency") val currency: String,
     @ColumnInfo(name = "value") val value: Float
-)
+) {
+    fun getFormattedValueString() = String.format("%.2f", value)
+}

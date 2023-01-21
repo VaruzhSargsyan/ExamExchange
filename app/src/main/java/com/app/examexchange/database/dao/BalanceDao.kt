@@ -1,16 +1,15 @@
 package com.app.examexchange.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Update
+import androidx.room.*
 import com.app.examexchange.database.entities.Balance
+import com.app.examexchange.database.entities.Currency
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BalanceDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(balance: Balance)
+    @Query("SELECT * FROM table_balance ORDER BY value ASC")
+    fun getBalance(): Flow<List<Balance>>
     
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(balance: Balance)
+    @Upsert
+    suspend fun upsert(listBalance: List<Balance>)
 }

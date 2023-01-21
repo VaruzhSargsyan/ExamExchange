@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CurrencyDao {
-    @Query("Select * from table_currencies order by name ASC")
+    @Query("SELECT * FROM table_currencies ORDER BY name ASC")
     fun allCurrencies(): Flow<List<Currency>>
     
     @Upsert

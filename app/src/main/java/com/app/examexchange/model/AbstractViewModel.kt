@@ -8,6 +8,4 @@ import com.app.examexchange.reopsitories.DatabaseRepository
 
 abstract class AbstractViewModel(protected val applicationModel: ApplicationModel) : ViewModel() {
     protected val api: Api by lazy { Client.getClient().create(Api::class.java) }
-    
-//    private val repository: DatabaseRepository by lazy { applicationModel.repository }
 }
