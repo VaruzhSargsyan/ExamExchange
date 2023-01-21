@@ -9,6 +9,5 @@ import kotlinx.coroutines.SupervisorJob
 
 class Application : Application() {
     private val applicationScope by lazy { CoroutineScope(SupervisorJob() + Dispatchers.IO) }
-    private val database by lazy { MyDatabase.getDatabase(this, applicationScope) }
-    val repository by lazy { DatabaseRepository(database) }
+    val applicationModel: ApplicationModel by lazy { ApplicationModel(this@Application, applicationScope) }
 }

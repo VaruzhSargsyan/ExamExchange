@@ -6,10 +6,11 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import com.app.examexchange.application.Application
 import com.app.examexchange.R
+import com.app.examexchange.model.ViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     
-    private val viewModel: MainViewModel by viewModels { ModelFactory((application as Application).repository) }
+    private val viewModel: MainViewModel by viewModels { ViewModelFactory((application as Application).applicationModel) }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
