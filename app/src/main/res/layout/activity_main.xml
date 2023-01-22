@@ -5,7 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/middle_margin"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.screens.MainActivity">
+    
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonSubmit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:text="@string/button_submit"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/textTitleBalance"
@@ -18,11 +30,41 @@
         android:id="@+id/listBalances"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/middle_margin"
+        android:layout_marginTop="@dimen/small_margin"
         tools:itemCount="10"
         android:orientation="horizontal"
         tools:listitem="@layout/list_item_balance"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/textTitleBalance"/>
+
+    <TextView
+        android:id="@+id/textTitleExchange"
+        style="@style/TitleStyle"
+        android:text="@string/title_currency_exchange"
+        app:layout_constraintTop_toBottomOf="@id/listBalances"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.app.examexchange.ui.custom.CurrencyView
+        android:id="@+id/viewCell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_margin"
+        app:layout_constraintTop_toBottomOf="@id/textTitleExchange"
+        app:text_id="@string/text_sell"
+        app:text_color="@color/black"
+        app:image_id="@drawable/image_arrow_up"
+        app:image_color="@color/red"/>
+
+    <com.app.examexchange.ui.custom.CurrencyView
+        android:id="@+id/viewReceive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_margin"
+        app:text_id="@string/text_sell"
+        app:text_color="@color/black"
+        app:image_id="@drawable/image_arrow_down"
+        app:image_color="@color/green"
+        app:layout_constraintTop_toBottomOf="@id/viewCell"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,8 +3,7 @@ package com.app.examexchange.model
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.examexchange.application.ApplicationModel
-import com.app.examexchange.reopsitories.DatabaseRepository
-import com.app.examexchange.ui.MainViewModel
+import com.app.examexchange.ui.screens.MainViewModel
 
 class ViewModelFactory(private val applicationModel: ApplicationModel) : ViewModelProvider.Factory {
     override fun <T: ViewModel> create(modelClass: Class<T>) : T {

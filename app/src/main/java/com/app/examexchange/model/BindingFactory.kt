@@ -6,6 +6,7 @@ import androidx.annotation.LayoutRes
 import androidx.viewbinding.ViewBinding
 import com.app.examexchange.R
 import com.app.examexchange.databinding.ActivityMainBinding
+import com.app.examexchange.databinding.ViewCurrencyBinding
 
 @Suppress("UNCHECKED_CAST")
 class BindingFactory {
@@ -15,7 +16,12 @@ class BindingFactory {
     
         fun <T : ViewBinding> bind(layoutInflater: LayoutInflater, @LayoutRes idLayout: Int): T =
             when (idLayout) {
+                // activities
                 R.layout.activity_main -> ActivityMainBinding.inflate(layoutInflater)
+    
+                // custom views
+                R.layout.view_currency -> ViewCurrencyBinding.inflate(layoutInflater)
+    
                 else -> throw IllegalArgumentException("Layout Id not found")
             } as T
     }

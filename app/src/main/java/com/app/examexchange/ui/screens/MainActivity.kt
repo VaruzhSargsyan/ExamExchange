@@ -1,4 +1,4 @@
-package com.app.examexchange.ui
+package com.app.examexchange.ui.screens
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +10,7 @@ import com.app.examexchange.databinding.ActivityMainBinding
 import com.app.examexchange.model.BindingFactory
 import com.app.examexchange.model.ViewModelFactory
 import com.kotlin.exam1.BalanceAdapter
+import kotlin.streams.toList
 
 class MainActivity : AppCompatActivity() {
     
@@ -29,9 +30,15 @@ class MainActivity : AppCompatActivity() {
         viewModel.listBalance.observe(this) { listBalance ->
             balanceAdapter.updateBalance(listBalance)
         }
-     
+
         viewModel.allCurrencies.observe(this) { currencies ->
-            Toast.makeText(this@MainActivity, "Currencies are downloaded", Toast.LENGTH_SHORT).show()
+            val currencyNames = currencies.stream().map { it.name }.toList()
+            binding.viewCell.initialize(currencyNames) {
+        
+            }
+            binding.viewReceive.initialize(currencyNames) {
+            
+            }
         }
     }
 }

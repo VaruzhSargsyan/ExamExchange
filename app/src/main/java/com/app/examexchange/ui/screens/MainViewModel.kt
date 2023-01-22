@@ -1,4 +1,4 @@
-package com.app.examexchange.ui
+package com.app.examexchange.ui.screens
 
 import androidx.lifecycle.*
 import com.app.examexchange.application.ApplicationModel
