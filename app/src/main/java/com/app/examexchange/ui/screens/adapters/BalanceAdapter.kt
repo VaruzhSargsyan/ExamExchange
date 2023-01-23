@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.app.examexchange.R
 import com.app.examexchange.database.entities.Balance
 import com.app.examexchange.databinding.ListItemBalanceBinding
+import com.app.examexchange.model.BindingFactory
 import com.app.examexchange.utils.BalanceDiffUtilCallback
 
 class BalanceAdapter : RecyclerView.Adapter<BalanceListViewHolder>() {
@@ -22,8 +24,7 @@ class BalanceAdapter : RecyclerView.Adapter<BalanceListViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BalanceListViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ListItemBalanceBinding.inflate(inflater, parent, false)
+        val binding: ListItemBalanceBinding = BindingFactory.bind(parent.context, R.layout.list_item_balance)
         return BalanceListViewHolder(binding)
     }
 

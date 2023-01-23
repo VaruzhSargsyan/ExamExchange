@@ -48,7 +48,7 @@
         android:layout_marginEnd="@dimen/big_margin"
         android:background="@null"
         android:hint="0.00"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:text="0.00"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/spinnerCurrency"

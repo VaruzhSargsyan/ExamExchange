@@ -90,4 +90,9 @@ dependencies {
     // binding
     kapt "com.android.databinding:compiler:3.1.4"
 
+
+
+    // Temp
+    implementation "com.github.skydoves:powerspinner:1.2.4"
+
 }

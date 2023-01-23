@@ -6,7 +6,10 @@ import androidx.annotation.LayoutRes
 import androidx.viewbinding.ViewBinding
 import com.app.examexchange.R
 import com.app.examexchange.databinding.ActivityMainBinding
+import com.app.examexchange.databinding.ListItemBalanceBinding
+import com.app.examexchange.databinding.ListItemCurrencySpinnerBinding
 import com.app.examexchange.databinding.ViewCurrencyBinding
+import com.app.examexchange.databinding.ViewProgressBinding
 
 @Suppress("UNCHECKED_CAST")
 class BindingFactory {
@@ -21,6 +24,9 @@ class BindingFactory {
     
                 // custom views
                 R.layout.view_currency -> ViewCurrencyBinding.inflate(layoutInflater)
+                R.layout.view_progress -> ViewProgressBinding.inflate(layoutInflater)
+                R.layout.list_item_currency_spinner -> ListItemCurrencySpinnerBinding.inflate(layoutInflater)
+                R.layout.list_item_balance -> ListItemBalanceBinding.inflate(layoutInflater)
     
                 else -> throw IllegalArgumentException("Layout Id not found")
             } as T
