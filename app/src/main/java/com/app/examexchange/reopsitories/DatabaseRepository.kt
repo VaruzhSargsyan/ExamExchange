@@ -1,14 +1,18 @@
 package com.app.examexchange.reopsitories
 
 import androidx.annotation.WorkerThread
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.app.examexchange.database.MyDatabase
 import com.app.examexchange.database.entities.Balance
 import com.app.examexchange.database.entities.Currency
+import com.app.examexchange.database.entities.Exchange
 import kotlinx.coroutines.flow.Flow
 
 class DatabaseRepository(database: MyDatabase) {
     private val currencyDao = database.currencyDao()
     private val balanceDao = database.balanceDao()
+    private val ruleDao = database.ruleDao()
+    private val exchangeDao = database.exchangeDao()
     
     var allCurrencies: Flow<List<Currency>> = currencyDao.allCurrencies()
     var listBalance: Flow<List<Balance>> = balanceDao.getBalance()
@@ -21,5 +25,21 @@ class DatabaseRepository(database: MyDatabase) {
     @WorkerThread
     suspend fun upsert(listBalance: List<Balance>) {
         balanceDao.upsert(listBalance)
+    }
+    
+    @WorkerThread
+    suspend fun insert(exchange: Exchange) {
+        exchangeDao.insert(exchange)
+    }
+    
+    @WorkerThread
+    suspend fun getFee() : Float {
+        val listRules = ruleDao.getAllRules()
+        for (rule in listRules) {
+            val script = rule.sql_script
+            if (exchangeDao.runRule(SimpleSQLiteQuery(script, null)) == true)
+                return 0f
+        }
+        return 0.7f
     }
 }

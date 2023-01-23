@@ -1,6 +1,7 @@
 package com.app.examexchange.ui.screens
 
 import androidx.lifecycle.*
+import com.app.examexchange.R
 import com.app.examexchange.application.ApplicationModel
 import com.app.examexchange.database.entities.*
 import com.app.examexchange.model.AbstractViewModel
@@ -11,13 +12,13 @@ import retrofit2.Response
 
 class MainViewModel(applicationModel: ApplicationModel) : AbstractViewModel(applicationModel) {
     
-    var allCurrencies: LiveData<List<Currency>> = applicationModel.repository.allCurrencies.asLiveData()
+    var listCurrencies: LiveData<List<Currency>> = applicationModel.repository.allCurrencies.asLiveData()
     var listBalance: LiveData<List<Balance>> = applicationModel.repository.listBalance.asLiveData()
     var currencySell: MutableLiveData<Currency?> = MutableLiveData(null)
     var currencyReceive: MutableLiveData<Currency?> = MutableLiveData(null)
     var sumSell: MutableLiveData<Float> = MutableLiveData(0f)
     var sumReceive: MutableLiveData<Float> = MutableLiveData(0f)
-//    var exchange: Exchange = Converter.convertFromTo(getCurrency("EUR"), getCurrency("USD"), 0f)
+    var message: MutableLiveData<Pair<String, String>?> = MutableLiveData(null)
     
     private val eventManager = EventManager()
     
@@ -77,16 +78,38 @@ class MainViewModel(applicationModel: ApplicationModel) : AbstractViewModel(appl
         }
     }
     
-    private fun getCurrency(currency: String?) : Currency? = allCurrencies.value?.find { it.name == currency }
-//    fun initDefaultExchange() {
-//        exchange.postValue(Converter.convertFromTo(getCurrency("EUR"), getCurrency("USD"), 0f))
-//    }
+    private fun getCurrency(currency: String?) : Currency? = listCurrencies.value?.find { it.name == currency }
+    private fun getBalance(currency: String?) : Balance? = listBalance.value?.find { it.currency == currency }
     
     fun initDefaultExchange() {
         if (currencySell.value == null) {
             currencySell.postValue(getCurrency("EUR"))
         }
         currencyReceive.value?: run { currencyReceive.postValue(getCurrency("USD")) }
+    }
+    
+    fun verifyExchange() : Boolean {
+        return true
+    }
+    
+    fun submitExchange() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val exchange =
+                Exchange(
+                    currencySell.value!!, currencyReceive.value!!,
+                    sumSell.value!!, sumReceive.value!!, applicationModel.repository.getFee(), 0f
+                )
+            val balanceSell = getBalance(currencySell.value?.name)
+            val balanceReceive = getBalance(currencyReceive.value?.name)
+    
+            val balanceUpdatedSell = exchange.updateSellBalance(balanceSell!!)
+            val balanceUpdatedReceive = exchange.updateReceiveBalance(balanceReceive ?: Balance(currencyReceive.value!!.name, 0f))
+    
+            applicationModel.repository.upsert(listOf(balanceUpdatedSell, balanceUpdatedReceive))
+            applicationModel.repository.insert(exchange)
+            
+            message.postValue(Pair(R.string.))
+        }
     }
 }
 

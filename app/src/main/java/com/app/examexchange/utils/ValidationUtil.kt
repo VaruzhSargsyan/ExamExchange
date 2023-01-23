@@ -13,12 +13,11 @@ class BalanceDiffUtilCallback(private val oldList: List<Balance>, private val ne
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].id == newList[newItemPosition].id
+        return oldList[oldItemPosition].currency == newList[newItemPosition].currency
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].currency == newList[newItemPosition].currency
-                && oldList[oldItemPosition].value == newList[newItemPosition].value
+        return oldList[oldItemPosition].value == newList[newItemPosition].value
     }
 }
 

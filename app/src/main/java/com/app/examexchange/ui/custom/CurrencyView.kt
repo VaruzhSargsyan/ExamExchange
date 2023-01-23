@@ -35,7 +35,6 @@ class CurrencyView : ConstraintLayout {
                 val value = originalString.toFloat()
                 val formattedString = String.format("%.2f", value)
                 
-                //setting text after format to EditText
                 val position = binding.editValue.selectionEnd
                 binding.editValue.setText(formattedString)
                 binding.editValue.setSelection(min(position, formattedString.length))
@@ -104,7 +103,7 @@ class CurrencyView : ConstraintLayout {
             && this.listCurrencies.size == listCurrencies.size
             && this.listCurrencies.containsAll(listCurrencies)
             && listCurrencies.containsAll(this.listCurrencies))
-            return // do not recreate an adapter
+            return // do not recreate an adapter if nothing changed
         
         this.listCurrencies = listCurrencies
         

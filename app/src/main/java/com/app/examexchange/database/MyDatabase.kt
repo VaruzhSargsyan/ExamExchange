@@ -8,10 +8,7 @@ import com.app.examexchange.database.dao.BalanceDao
 import com.app.examexchange.database.dao.CurrencyDao
 import com.app.examexchange.database.dao.ExchangeDao
 import com.app.examexchange.database.dao.RuleDao
-import com.app.examexchange.database.entities.Balance
-import com.app.examexchange.database.entities.Currency
-import com.app.examexchange.database.entities.Exchange
-import com.app.examexchange.database.entities.Rule
+import com.app.examexchange.database.entities.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -32,6 +29,7 @@ abstract class MyDatabase : RoomDatabase() {
             INSTANCE?.let { database ->
                 scope.launch {
                     database.balanceDao().upsert(listOf(Balance(currency = "EUR", value = 1000.0f)))
+                    database.ruleDao().insert(getRules())
                 }
             }
         }

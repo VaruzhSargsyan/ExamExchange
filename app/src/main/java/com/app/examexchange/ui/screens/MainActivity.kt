@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         
         binding.buttonSubmit.setOnClickListener {
+            if (viewModel.verifyExchange())
+                viewModel.submitExchange()
         }
     
         binding.listBalances.adapter = balanceAdapter
@@ -39,12 +41,10 @@ class MainActivity : AppCompatActivity() {
         )
 
         viewModel.listBalance.observe(this) { listBalance ->
-//            val currencyNames = listBalance.stream().map { it.currency }.toList()
             balanceAdapter.updateBalance(listBalance)
         }
 
-        viewModel.allCurrencies.observe(this) { currencies ->
-//            val currencyNames = currencies.stream().map { it.name }.toList().subList(0, Random.nextInt(0, min(20, currencies.size)))
+        viewModel.listCurrencies.observe(this) { currencies ->
             val currencyNames = currencies.stream().map { it.name }.toList()
             binding.viewReceive.update(currencyNames)
             binding.viewCell.update(currencyNames)
@@ -69,12 +69,5 @@ class MainActivity : AppCompatActivity() {
         viewModel.sumReceive.observe(this) { sum ->
             binding.viewReceive.updateOnlyValue(sum)
         }
-        
-//        viewModel.exchange.observe(this) {
-//            it?.let {
-//                binding.viewCell.updateOnlyValues(it.sumFrom, it.currencyFrom)
-//                binding.viewReceive.updateOnlyValues(it.sumTo, it.currencyTo)
-//            }
-//        }
     }
 }

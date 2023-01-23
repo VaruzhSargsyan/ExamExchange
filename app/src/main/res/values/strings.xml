@@ -6,6 +6,7 @@
 
     <string name="text_sell">Sell</string>
     <string name="text_receive">Receive</string>
+    <string name="title_currency_converted">Currency converted</string>
 
     <string name="button_submit">Submit</string>
 
