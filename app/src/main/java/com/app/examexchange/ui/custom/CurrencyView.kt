@@ -22,8 +22,9 @@ class CurrencyView : ConstraintLayout {
     private lateinit var blockCurrency: (String) -> Unit
     private lateinit var blockSum: (Float) -> Unit
     private var currency: String? = null
+    private var sum: Float? = null
     private var adapter: ArrayAdapter<String>? = null
-    private var listCurrencies: List<String> = listOf("EUR", "USD")
+    private var listCurrencies: List<String> = ArrayList()//listOf("EUR", "USD")
 
     private val textWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -46,8 +47,9 @@ class CurrencyView : ConstraintLayout {
         }
     }
     
-    private val onItemSelectedListener = object: OnItemSelectedListener {
-        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+    private val onItemSelectedListener = object : OnItemSelectedListener1 {
+        override var firstItemSelectionAvoided: Boolean = false
+        override fun onItemSelected(position: Int) {
             blockCurrency(adapter!!.getItem(position).toString())
         }
     
@@ -90,7 +92,6 @@ class CurrencyView : ConstraintLayout {
         )
     
         binding.editValue.addTextChangedListener(textWatcher)
-        binding.spinnerCurrency.onItemSelectedListener = onItemSelectedListener
     }
     
     fun setup(blockCurrency: (String) -> Unit, blockSum: (Float) -> Unit) {
@@ -110,12 +111,21 @@ class CurrencyView : ConstraintLayout {
         adapter = ArrayAdapter(context, R.layout.list_item_currency_spinner, listCurrencies)
         binding.spinnerCurrency.adapter = adapter
         
+        binding.spinnerCurrency.onItemSelectedListener = onItemSelectedListener
+    
         currency?.let { updateOnlyValue(it) }
+        sum?.let { updateOnlyValue(it) }
     }
     
     fun updateOnlyValue(sum: Float) {
+        this.sum = sum
         binding.editValue.removeTextChangedListener(textWatcher)
-        binding.editValue.setText(String.format("%.2f", sum))
+        
+        val position = binding.editValue.selectionEnd
+        val textFormatted = String.format("%.2f", sum)
+        binding.editValue.setText(textFormatted)
+        binding.editValue.setSelection(min(position, textFormatted.length))
+        
         binding.editValue.addTextChangedListener(textWatcher)
     }
     
@@ -124,8 +134,23 @@ class CurrencyView : ConstraintLayout {
         
         adapter?.let {
             binding.spinnerCurrency.onItemSelectedListener = null
+            
             binding.spinnerCurrency.setSelection(it.getPosition(currency))
+            
             binding.spinnerCurrency.onItemSelectedListener = onItemSelectedListener
+        }
+    }
+    
+    interface OnItemSelectedListener1 : OnItemSelectedListener {
+        var firstItemSelectionAvoided: Boolean
+    
+        abstract fun onItemSelected(position: Int)
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+            if (!firstItemSelectionAvoided && position == 0) {
+                firstItemSelectionAvoided = true
+                return
+            }
+            onItemSelected(position)
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.annotation.LayoutRes
 import androidx.viewbinding.ViewBinding
 import com.app.examexchange.R
 import com.app.examexchange.databinding.ActivityMainBinding
+import com.app.examexchange.databinding.DialogSimpleBinding
 import com.app.examexchange.databinding.ListItemBalanceBinding
 import com.app.examexchange.databinding.ListItemCurrencySpinnerBinding
 import com.app.examexchange.databinding.ViewCurrencyBinding
@@ -21,6 +22,9 @@ class BindingFactory {
             when (idLayout) {
                 // activities
                 R.layout.activity_main -> ActivityMainBinding.inflate(layoutInflater)
+                
+                // activities
+                R.layout.dialog_simple -> DialogSimpleBinding.inflate(layoutInflater)
     
                 // custom views
                 R.layout.view_currency -> ViewCurrencyBinding.inflate(layoutInflater)

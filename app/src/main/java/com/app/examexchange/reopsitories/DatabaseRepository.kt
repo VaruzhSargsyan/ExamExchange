@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
 class DatabaseRepository(database: MyDatabase) {
     private val currencyDao = database.currencyDao()
     private val balanceDao = database.balanceDao()
-    private val ruleDao = database.ruleDao()
     private val exchangeDao = database.exchangeDao()
     
     var allCurrencies: Flow<List<Currency>> = currencyDao.allCurrencies()
@@ -32,14 +31,4 @@ class DatabaseRepository(database: MyDatabase) {
         exchangeDao.insert(exchange)
     }
     
-    @WorkerThread
-    suspend fun getFee() : Float {
-        val listRules = ruleDao.getAllRules()
-        for (rule in listRules) {
-            val script = rule.sql_script
-            if (exchangeDao.runRule(SimpleSQLiteQuery(script, null)) == true)
-                return 0f
-        }
-        return 0.7f
-    }
 }

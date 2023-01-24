@@ -14,6 +14,6 @@ interface ExchangeDao {
     suspend fun insert(exchange: Exchange)
     
     @RawQuery
-    fun runRule(query: SupportSQLiteQuery): Boolean?
+    suspend fun runRuleOnHistory(query: SupportSQLiteQuery): Boolean?
     
 }

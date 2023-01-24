@@ -13,8 +13,8 @@ class Exchange(@PrimaryKey(autoGenerate = true) val id: Int = 0,
                 @ColumnInfo(name = "rate_receive") val rateReceive: Float = 0f,
                 @ColumnInfo(name = "sum_sell") val sumSell: Float = 0f,
                 @ColumnInfo(name = "sum_receive") val sumReceive: Float = 0f,
-                @ColumnInfo(name = "fee_rate") val feeRate: Float = 0f,
-                @ColumnInfo(name = "fee_sum") val feeSum: Float = 0f,
+                @ColumnInfo(name = "fee_rate") var feeRate: Float = 0f,
+                @ColumnInfo(name = "fee_sum") var feeSum: Float = 0f,
                 @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis()
 ) {
     constructor(currSell: Currency, currReceive: Currency,
@@ -32,6 +32,11 @@ class Exchange(@PrimaryKey(autoGenerate = true) val id: Int = 0,
     
     fun updateReceiveBalance(balance: Balance) : Balance {
         return Balance(currency = currencyReceive, value = balance.value + sumReceive)
+    }
+    
+    fun updateFeeRate(rate: Float) {
+        feeRate = rate
+        feeSum = if (feeRate != 0f) sumSell / feeRate else 0f
     }
 }
 

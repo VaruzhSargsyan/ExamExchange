@@ -6,9 +6,16 @@
 
     <string name="text_sell">Sell</string>
     <string name="text_receive">Receive</string>
+    <string name="text_currency_converted_formatted">You have converted %.2f %s to %.2f %s. Commission fee - %.2f %s.</string>
+    <string name="text_not_enough_funds">Please check the balance!\nNot enough funds (%s).</string>
+    <string name="text_both_currencies_are_the_same">Sell and Receive currencies are the same!</string>
+    <string name="text_please_enter_positive_values">Please enter positive values!</string>
+
     <string name="title_currency_converted">Currency converted</string>
+    <string name="title_currency_did_not_converted">Currency did not converted</string>
 
     <string name="button_submit">Submit</string>
+    <string name="button_close">Close</string>
 
     <string name="empty"/>
 </resources>

@@ -22,13 +22,13 @@ abstract class MyDatabase : RoomDatabase() {
     
     private class DatabaseCallback(
         private val scope: CoroutineScope
-    ) : RoomDatabase.Callback() {
+    ) : Callback() {
 
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    database.balanceDao().upsert(listOf(Balance(currency = "EUR", value = 1000.0f)))
+                    database.balanceDao().upsert(listOf(Balance(currency = "EUR", value = 10000.0f)))
                     database.ruleDao().insert(getRules())
                 }
             }

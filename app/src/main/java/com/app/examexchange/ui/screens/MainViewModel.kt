@@ -50,7 +50,8 @@ class MainViewModel(applicationModel: ApplicationModel) : AbstractViewModel(appl
         if (currencySell.value?.name != currency) {
             getCurrency(currency)?.let {
                 currencySell.postValue(it)
-                sumReceive.postValue(currencyReceive.value!!.rate / it.rate * sumSell.value!!)
+                val rateReceive = currencyReceive.value?.rate?:0f
+                sumReceive.postValue(rateReceive / it.rate * sumSell.value!!)
             }
         }
     }
@@ -59,7 +60,11 @@ class MainViewModel(applicationModel: ApplicationModel) : AbstractViewModel(appl
         if (currencyReceive.value?.name != currency) {
             getCurrency(currency)?.let {
                 currencyReceive.postValue(it)
-                sumReceive.postValue(it.rate / currencySell.value!!.rate * sumSell.value!!)
+                val rateSell = currencySell.value?.rate ?: 0f
+                if (rateSell == 0f)
+                    sumReceive.postValue(0f)
+                else
+                    sumReceive.postValue(it.rate / rateSell * sumSell.value!!)
             }
         }
     }
@@ -67,14 +72,24 @@ class MainViewModel(applicationModel: ApplicationModel) : AbstractViewModel(appl
     fun updateSellSum(sum: Float) {
         if (sumSell.value != sum) {
             sumSell.postValue(sum)
-            sumReceive.postValue(currencyReceive.value!!.rate / currencySell.value!!.rate * sum)
+            val rateSell = currencySell.value?.rate ?: 0f
+            val rateReceive = currencyReceive.value?.rate ?: 0f
+            if (rateSell == 0f || rateReceive == 0f)
+                sumReceive.postValue(0f)
+            else
+                sumReceive.postValue(currencyReceive.value!!.rate / currencySell.value!!.rate * sum)
         }
     }
     
     fun updateReceiveSum(sum: Float) {
         if (sumReceive.value != sum) {
             sumReceive.postValue(sum)
-            sumSell.postValue(currencySell.value!!.rate / currencyReceive.value!!.rate * sum)
+            val rateSell = currencySell.value?.rate ?: 0f
+            val rateReceive = currencyReceive.value?.rate ?: 0f
+            if (rateSell == 0f || rateReceive == 0f)
+                sumSell.postValue(0f)
+            else
+                sumSell.postValue(currencySell.value!!.rate / currencyReceive.value!!.rate * sum)
         }
     }
     
@@ -82,33 +97,67 @@ class MainViewModel(applicationModel: ApplicationModel) : AbstractViewModel(appl
     private fun getBalance(currency: String?) : Balance? = listBalance.value?.find { it.currency == currency }
     
     fun initDefaultExchange() {
-        if (currencySell.value == null) {
-            currencySell.postValue(getCurrency("EUR"))
-        }
+        currencySell.value?: run { currencySell.postValue(getCurrency("EUR")) }
         currencyReceive.value?: run { currencyReceive.postValue(getCurrency("USD")) }
     }
     
-    fun verifyExchange() : Boolean {
-        return true
-    }
-    
-    fun submitExchange() {
+    fun verifyAndSubmitExchange() {
         viewModelScope.launch(Dispatchers.IO) {
+            if (currencySell.value?.name == currencyReceive.value?.name) {
+                val title = applicationModel.application.getString(R.string.title_currency_did_not_converted)
+                val body = applicationModel.application.getString(R.string.text_both_currencies_are_the_same)
+                message.postValue(Pair(title,body))
+                return@launch
+            }
+            if (sumSell.value!! <= 0f || sumReceive.value!! <= 0f) {
+                val title = applicationModel.application.getString(R.string.title_currency_did_not_converted)
+                val body = applicationModel.application.getString(R.string.text_please_enter_positive_values)
+                message.postValue(Pair(title,body))
+                return@launch
+            }
             val exchange =
                 Exchange(
                     currencySell.value!!, currencyReceive.value!!,
-                    sumSell.value!!, sumReceive.value!!, applicationModel.repository.getFee(), 0f
+                    sumSell.value!!, sumReceive.value!!, 0f, 0f
                 )
+            
+            applicationModel.feeCalculator.updateFee(exchange)
+            
             val balanceSell = getBalance(currencySell.value?.name)
             val balanceReceive = getBalance(currencyReceive.value?.name)
     
             val balanceUpdatedSell = exchange.updateSellBalance(balanceSell!!)
             val balanceUpdatedReceive = exchange.updateReceiveBalance(balanceReceive ?: Balance(currencyReceive.value!!.name, 0f))
+            
+            if (balanceUpdatedSell.value < 0) {
+                val title = applicationModel.application.getString(R.string.title_currency_did_not_converted)
+                val body =
+                    String.format(
+                        applicationModel.application.getString(R.string.text_not_enough_funds),
+                        balanceSell.currency
+                    )
+                message.postValue(Pair(title,body))
+                return@launch
+            }
     
             applicationModel.repository.upsert(listOf(balanceUpdatedSell, balanceUpdatedReceive))
             applicationModel.repository.insert(exchange)
-            
-            message.postValue(Pair(R.string.))
+    
+            val title = applicationModel.application.getString(R.string.title_currency_converted)
+            val body =
+                String.format(
+                    applicationModel.application.getString(R.string.text_currency_converted_formatted),
+                    sumSell.value,
+                    currencySell.value?.name,
+                    sumReceive.value,
+                    currencyReceive.value?.name,
+                    exchange.feeSum,
+                    balanceUpdatedSell.currency,
+                )
+            message.postValue(Pair(title,body))
+    
+            sumSell.postValue(0f)
+            sumReceive.postValue(0f)
         }
     }
 }

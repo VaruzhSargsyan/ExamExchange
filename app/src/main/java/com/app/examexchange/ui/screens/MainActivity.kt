@@ -9,6 +9,7 @@ import com.app.examexchange.R
 import com.app.examexchange.databinding.ActivityMainBinding
 import com.app.examexchange.model.BindingFactory
 import com.app.examexchange.model.ViewModelFactory
+import com.app.examexchange.ui.custom.SimpleDialog
 import com.kotlin.exam1.BalanceAdapter
 import kotlin.streams.toList
 
@@ -26,8 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         
         binding.buttonSubmit.setOnClickListener {
-            if (viewModel.verifyExchange())
-                viewModel.submitExchange()
+            viewModel.verifyAndSubmitExchange()
         }
     
         binding.listBalances.adapter = balanceAdapter
@@ -45,12 +45,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.listCurrencies.observe(this) { currencies ->
+            viewModel.initDefaultExchange()
+
             val currencyNames = currencies.stream().map { it.name }.toList()
             binding.viewReceive.update(currencyNames)
             binding.viewCell.update(currencyNames)
             if (binding.viewProgressBar.visibility == View.VISIBLE) {
                 binding.viewProgressBar.visibility = View.GONE
-                viewModel.initDefaultExchange()
             }
         }
     
@@ -69,5 +70,13 @@ class MainActivity : AppCompatActivity() {
         viewModel.sumReceive.observe(this) { sum ->
             binding.viewReceive.updateOnlyValue(sum)
         }
+        
+        viewModel.message.observe(this) {
+            it?.let { showSimpleDialog(it.first, it.second) {} }
+        }
+    }
+    
+    private fun showSimpleDialog(title: String, message: String, block: () -> Unit) {
+        this@MainActivity.runOnUiThread(SimpleDialog(this@MainActivity, title, message, block))
     }
 }
