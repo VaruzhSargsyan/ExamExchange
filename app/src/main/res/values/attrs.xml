@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CurrencyViewStyleable">
+        <attr name="image_id" format="reference" />
+        <attr name="image_color" format="reference|color" />
+        <attr name="text_id" format="reference" />
+        <attr name="text_color" format="reference|color" />
+    </declare-styleable>
+
+</resources>

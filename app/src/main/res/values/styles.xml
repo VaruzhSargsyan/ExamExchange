@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr format="color" name="textColorPrimary"/>
+    <attr format="color" name="textColorSecondary"/>
+    <attr format="color" name="colorPrimaryTransparent"/>
+
+    <style name="TitleStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/middle_margin</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/textColorSecondary</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="BalanceTextStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginEnd">@dimen/middle_margin</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">?attr/textColorPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ProgressBarStyle" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:progressTint">?attr/colorPrimaryTransparent</item>
+        <item name="android:indeterminateTint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="DialogTitleStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?attr/textColorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@null</item>
+    </style>
+
+</resources>
