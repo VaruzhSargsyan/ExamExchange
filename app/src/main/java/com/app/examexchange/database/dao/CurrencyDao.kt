@@ -12,5 +12,5 @@ interface CurrencyDao {
     fun allCurrencies(): Flow<List<Currency>>
     
     @Upsert
-    fun updateCurrencies(listCurrency: List<Currency>)
+    suspend fun updateCurrencies(listCurrency: List<Currency>)
 }

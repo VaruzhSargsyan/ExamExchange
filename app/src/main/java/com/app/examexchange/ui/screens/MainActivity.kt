@@ -13,6 +13,9 @@ import com.app.examexchange.ui.custom.SimpleDialog
 import com.kotlin.exam1.BalanceAdapter
 import kotlin.streams.toList
 
+/*
+ * The only activity in the task :)
+ */
 class MainActivity : AppCompatActivity() {
     
     private val viewModel: MainViewModel by viewModels { ViewModelFactory((application as Application).applicationModel) }
@@ -22,13 +25,20 @@ class MainActivity : AppCompatActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        initUI()
+        initModel()
+    }
     
+    private fun showSimpleDialog(title: String, message: String, block: () -> Unit) {
+        this@MainActivity.runOnUiThread(SimpleDialog(this@MainActivity, title, message, block))
+    }
+    
+    private fun initUI () {
         binding = BindingFactory.bind(this, R.layout.activity_main)
         setContentView(binding.root)
-        
-        binding.buttonSubmit.setOnClickListener {
-            viewModel.verifyAndSubmitExchange()
-        }
+    
+        binding.buttonSubmit.setOnClickListener { viewModel.verifyAndSubmitExchange() }
     
         binding.listBalances.adapter = balanceAdapter
         binding.viewCell.setup(
@@ -39,14 +49,16 @@ class MainActivity : AppCompatActivity() {
             { currency-> viewModel.updateReceiveCurrency(currency) },
             { sum -> viewModel.updateReceiveSum(sum) }
         )
-
+    }
+    
+    private fun initModel() {
         viewModel.listBalance.observe(this) { listBalance ->
             balanceAdapter.updateBalance(listBalance)
         }
-
+    
         viewModel.listCurrencies.observe(this) { currencies ->
             viewModel.initDefaultExchange()
-
+        
             val currencyNames = currencies.stream().map { it.name }.toList()
             binding.viewReceive.update(currencyNames)
             binding.viewCell.update(currencyNames)
@@ -70,13 +82,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.sumReceive.observe(this) { sum ->
             binding.viewReceive.updateOnlyValue(sum)
         }
-        
+    
         viewModel.message.observe(this) {
             it?.let { showSimpleDialog(it.first, it.second) {} }
         }
-    }
-    
-    private fun showSimpleDialog(title: String, message: String, block: () -> Unit) {
-        this@MainActivity.runOnUiThread(SimpleDialog(this@MainActivity, title, message, block))
     }
 }

@@ -13,9 +13,3 @@ class Application : Application() {
     private val applicationScope by lazy { CoroutineScope(SupervisorJob() + Dispatchers.IO) }
     val applicationModel: ApplicationModel by lazy { ApplicationModel(this@Application, applicationScope) }
 }
-
-fun Context.getThemeColor(@AttrRes id: Int): Int {
-    val typedValue = TypedValue()
-    this.theme.resolveAttribute(id, typedValue, true)
-    return ContextCompat.getColor(this, typedValue.resourceId)
-}

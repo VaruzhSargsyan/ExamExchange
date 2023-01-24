@@ -10,6 +10,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
+/*
+ * View Model to support the activity/UI
+ */
 class MainViewModel(applicationModel: ApplicationModel) : AbstractViewModel(applicationModel) {
     
     var listCurrencies: LiveData<List<Currency>> = applicationModel.repository.allCurrencies.asLiveData()
@@ -126,7 +129,7 @@ class MainViewModel(applicationModel: ApplicationModel) : AbstractViewModel(appl
             val balanceSell = getBalance(currencySell.value?.name)
             val balanceReceive = getBalance(currencyReceive.value?.name)
     
-            val balanceUpdatedSell = exchange.updateSellBalance(balanceSell!!)
+            val balanceUpdatedSell = exchange.updateSellBalance(balanceSell ?: Balance(currencySell.value!!.name, 0f))
             val balanceUpdatedReceive = exchange.updateReceiveBalance(balanceReceive ?: Balance(currencyReceive.value!!.name, 0f))
             
             if (balanceUpdatedSell.value < 0) {
@@ -134,7 +137,7 @@ class MainViewModel(applicationModel: ApplicationModel) : AbstractViewModel(appl
                 val body =
                     String.format(
                         applicationModel.application.getString(R.string.text_not_enough_funds),
-                        balanceSell.currency
+                        balanceSell?.currency ?: ""
                     )
                 message.postValue(Pair(title,body))
                 return@launch

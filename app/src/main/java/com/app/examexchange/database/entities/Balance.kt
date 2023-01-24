@@ -9,8 +9,6 @@ data class Balance (
     @PrimaryKey
     @ColumnInfo(name = "currency") val currency: String,
     @ColumnInfo(name = "value") val value: Float
-) : Comparable<Balance> {
+) {
     fun getFormattedValueString() = String.format("%.2f", value)
-    
-    override fun compareTo(other: Balance) = value.compareTo(other.value)
 }

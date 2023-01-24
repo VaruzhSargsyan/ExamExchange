@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.examexchange.application.ApplicationModel
 import com.app.examexchange.ui.screens.MainViewModel
 
+/*
+ * View Model Factory
+ */
 class ViewModelFactory(private val applicationModel: ApplicationModel) : ViewModelProvider.Factory {
     override fun <T: ViewModel> create(modelClass: Class<T>) : T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java))

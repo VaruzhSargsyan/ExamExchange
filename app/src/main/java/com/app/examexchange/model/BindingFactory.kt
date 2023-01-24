@@ -12,6 +12,10 @@ import com.app.examexchange.databinding.ListItemCurrencySpinnerBinding
 import com.app.examexchange.databinding.ViewCurrencyBinding
 import com.app.examexchange.databinding.ViewProgressBinding
 
+/*
+ * Binding Factory is a place to collect layout inflation: all in one place.
+ * Both members are static
+ */
 @Suppress("UNCHECKED_CAST")
 class BindingFactory {
     companion object {

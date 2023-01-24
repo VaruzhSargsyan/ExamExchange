@@ -17,6 +17,10 @@ import com.app.examexchange.databinding.ViewCurrencyBinding
 import com.app.examexchange.model.BindingFactory
 import kotlin.math.min
 
+
+/*
+ * Custom UI for sell and receive conversion
+ */
 class CurrencyView : ConstraintLayout {
     private val binding: ViewCurrencyBinding by lazy { BindingFactory.bind(context, R.layout.view_currency) }
     private lateinit var blockCurrency: (String) -> Unit

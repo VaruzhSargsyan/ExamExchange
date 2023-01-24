@@ -7,7 +7,6 @@ import androidx.room.RawQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.app.examexchange.database.entities.Exchange
 
-
 @Dao
 interface ExchangeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

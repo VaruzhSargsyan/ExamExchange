@@ -8,6 +8,9 @@ import com.app.examexchange.R
 import com.app.examexchange.databinding.ViewProgressBinding
 import com.app.examexchange.model.BindingFactory
 
+/*
+ * Custom Progress Bar UI to lock the screen for back calls
+ */
 class ProgressView : ConstraintLayout {
     private val binding: ViewProgressBinding by lazy { BindingFactory.bind(context, R.layout.view_progress) }
 

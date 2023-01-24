@@ -36,7 +36,7 @@ class Exchange(@PrimaryKey(autoGenerate = true) val id: Int = 0,
     
     fun updateFeeRate(rate: Float) {
         feeRate = rate
-        feeSum = if (feeRate != 0f) sumSell / feeRate else 0f
+        feeSum = if (feeRate != 0f) sumSell * feeRate else 0f
     }
 }
 

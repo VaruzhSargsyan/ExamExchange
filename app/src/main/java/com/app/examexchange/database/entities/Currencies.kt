@@ -12,4 +12,5 @@ data class Currencies(
         rates.entries.forEach { entry -> listCurrency.add(Currency(entry.key, entry.value)) }
         return listCurrency
     }
+    
 }

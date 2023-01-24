@@ -6,7 +6,11 @@ import com.app.examexchange.database.MyDatabase
 import com.app.examexchange.database.entities.Exchange
 import com.app.examexchange.database.entities.RuleTypes
 
-// layer to get/generate/calculate the fee
+/*
+ * TODO: layer to get/generate/calculate the fee.
+ *  currently it is working with local db but can be replaced with any other data location and data structure
+ */
+
 class FeeCalculator(database: MyDatabase) {
     private val ruleDao = database.ruleDao()
     private val exchangeDao = database.exchangeDao()
@@ -24,10 +28,16 @@ class FeeCalculator(database: MyDatabase) {
                         return
                     }
                 }
+                
                 RuleTypes.CONVERSION_MAXIMAL_LIMIT_IN_EURO -> {
-                    if (exchange.sumSell / exchange.rateSell < 200) {
-                        exchange.updateFeeRate(0f)
-                        return
+                    try {
+                        val limit = rule.content.toFloat()
+                        if (exchange.sumSell / exchange.rateSell <= limit) {
+                            exchange.updateFeeRate(0f)
+                            return
+                        }
+                    } catch (exception: Exception) {
+                        exception.printStackTrace()
                     }
                 }
     

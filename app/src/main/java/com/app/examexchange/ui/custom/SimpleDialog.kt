@@ -8,14 +8,13 @@ import com.app.examexchange.R
 import com.app.examexchange.databinding.DialogSimpleBinding
 import com.app.examexchange.model.BindingFactory
 
+/*
+ * Custom dialog
+ */
 class SimpleDialog(context: Context?, title: String, message: String, private val block: () -> Unit) : Runnable {
     private val dialog: Dialog
 
     override fun run() {
-        show()
-    }
-
-    private fun show() {
         dialog.show()
     }
 
