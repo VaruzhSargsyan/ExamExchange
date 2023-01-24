@@ -73,7 +73,7 @@ class CurrencyView : ConstraintLayout {
                 val imageId = getResourceId(R.styleable.CurrencyViewStyleable_image_id, R.drawable.image_arrow_down)
                 val imageColor = getColor(R.styleable.CurrencyViewStyleable_image_color, Color.RED)
                 val textId = getString(R.styleable.CurrencyViewStyleable_text_id)
-                val textColor = getColor(R.styleable.CurrencyViewStyleable_text_color, Color.BLACK)
+                val textColor = getColor(R.styleable.CurrencyViewStyleable_text_color, Color.GRAY)
                 
                 binding.imageType.setImageResource(imageId)
                 binding.imageType.imageTintList = ColorStateList.valueOf(imageColor)
@@ -109,6 +109,7 @@ class CurrencyView : ConstraintLayout {
         this.listCurrencies = listCurrencies
         
         adapter = ArrayAdapter(context, R.layout.list_item_currency_spinner, listCurrencies)
+        adapter?.setDropDownViewResource(R.layout.list_item_currency_spinner)
         binding.spinnerCurrency.adapter = adapter
         
         binding.spinnerCurrency.onItemSelectedListener = onItemSelectedListener

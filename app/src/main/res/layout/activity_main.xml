@@ -55,7 +55,7 @@
             android:layout_marginTop="@dimen/small_margin"
             app:layout_constraintTop_toBottomOf="@id/textTitleExchange"
             app:text_id="@string/text_sell"
-            app:text_color="@color/black"
+            app:text_color="?attr/textColorPrimary"
             app:image_id="@drawable/image_arrow_up"
             app:image_color="@color/red"/>
 
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_margin"
             app:text_id="@string/text_receive"
-            app:text_color="@color/black"
+            app:text_color="?attr/textColorPrimary"
             app:image_id="@drawable/image_arrow_down"
             app:image_color="@color/green"
             app:layout_constraintTop_toBottomOf="@id/viewCell"/>
